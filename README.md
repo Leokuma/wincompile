@@ -29,4 +29,4 @@ deno run -A https://deno.land/x/wincompile/wincompile.ts --Icon=abc.ico -- -A --
 ```
 
 ### How it works
-Wincompile uses [Electron's _rcedit_](https://github.com/electron/rcedit) to create a patched version of Deno on the fly just to compile your app. After compilation, the patched Deno is deleted. Your original Deno installation is untouched in the process.
+Wincompile uses Electron's [rcedit](https://github.com/electron/rcedit) to create a patched version of Deno on the fly just to compile your app. After compilation, the patched Deno is deleted. Your original Deno installation is untouched in the process.
