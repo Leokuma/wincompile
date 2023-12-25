@@ -9,31 +9,22 @@ ensureDirSync(wincompileCacheDir);
 
 const txtEnc = new TextEncoder();
 
-async function cache(url: URL): Promise<boolean> {
+async function cache(url: URL, opts = {refresh: false}): Promise<string> {
 	const filename = await makePath(url.href);
-	Deno.writeFileSync(filename, new Uint8Array(await (await fetch(url)).arrayBuffer()));
-	return true;
+	if (opts.refresh || !await getPathFromCache(url.href))
+		Deno.writeFileSync(filename, new Uint8Array(await (await fetch(url)).arrayBuffer()));
+	return filename;
 }
 
 async function getDataFromCache(url: URL): Promise<Uint8Array | null> {
-	const path = await _getPathFromCache(url.href);
-
-	if (!path)
-		return null;
-
+	const path = await getPathFromCache(url.href);
+	if (!path) return null;
 	return await Deno.readFile(path);
 }
 
-function getPathFromCache(url: URL): Promise<string | null> {
-	return _getPathFromCache(url.href);
-}
-
-async function _getPathFromCache(url: string): Promise<string | null> {
+async function getPathFromCache(url: string): Promise<string> {
 	const path = await makePath(url);
-
-	if (!existsSync(path))
-		return null;
-
+	if (!existsSync(path)) return '';
 	return path;
 }
 
@@ -45,4 +36,5 @@ async function hashUrl(url: string): Promise<string> {
 	return encodeHex(await crypto.subtle.digest('sha-256', txtEnc.encode(url)));
 }
 
-export {cache, getDataFromCache, getPathFromCache};
+export default cache;
+export {getDataFromCache};
