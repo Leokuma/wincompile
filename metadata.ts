@@ -1,10 +1,10 @@
 import cache from './cache.ts';
 
-const rceditPath = await cache(new URL('https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe'))
-
 const txtDec = new TextDecoder();
 
-function setMetadata(exePath: string, metadata: Metadata): string[] {
+async function setMetadata(exePath: string, metadata: Metadata, opts = {recache: false}): Promise<string[]> {
+	const rceditPath = await cache(new URL('https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe'), {refresh: opts.recache});
+
 	const problems = checkMetadata(metadata);
 	if (problems.length) return problems;
 

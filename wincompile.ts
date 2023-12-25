@@ -26,6 +26,7 @@ ${bold('Wincompile options (case-sensitive)')}
 	--OriginalFilename     Example: "my_app.exe"
 	--ProductName          Example: "Super App"
 	--ProductVersion       Examples: "1", "2.rc2". Default "1"
+	--recache              Redownload and cache Wincompile assets. Use only if Wincompile is not working properly
 
 ${bold('Deno compile options')}
 	Same as ${italic('deno compile')}.
@@ -45,7 +46,7 @@ if (Deno.build.os != 'windows') {
 
 const parsedArgs = parseArgs(Deno.args, {string: ['FileVersion', 'ProductVersion']});
 
-const defaultIconPath = await cache(new URL('https://raw.githubusercontent.com/Leokuma/wincompile/0.1.0/windowprogram.ico'));
+const defaultIconPath = await cache(new URL('https://raw.githubusercontent.com/Leokuma/wincompile/0.1.0/windowprogram.ico'), {refresh: !!parsedArgs.recache});
 
 const defaultMetadata: Metadata = {
 	Icon: defaultIconPath,
@@ -63,7 +64,7 @@ const metadata: Metadata = {...defaultMetadata, ...parsedArgs};
 
 const patchedDenoPath = Deno.makeTempFileSync();
 copySync(Deno.execPath(), patchedDenoPath, {overwrite: true});
-const patchErrors = setMetadata(patchedDenoPath, metadata);
+const patchErrors = await setMetadata(patchedDenoPath, metadata, {recache: !!parsedArgs.recache});
 if (patchErrors.length) {
 	console.error(red(patchErrors.join('\n')) + '\n');
 	Deno.exit(1);
