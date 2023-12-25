@@ -8,7 +8,7 @@ if (!Deno.args.length) {
 	const help = `Compile Deno apps for Windows with custom icon and metadata.
 
 ${bold('Installation')}
-	deno install -f --allow-env=DENO_DIR,LOCALAPPDATA --allow-net=raw.githubusercontent.com/Leokuma/wincompile --allow-read --allow-write --allow-run https://deno.land/x/wincompile@0.2.0/wincompile.ts
+	deno install -f --allow-env=DENO_DIR,LOCALAPPDATA --allow-net=raw.githubusercontent.com/Leokuma/wincompile --allow-read --allow-write --allow-run https://deno.land/x/wincompile@0.2.1/wincompile.ts
 
 ${bold('Examples')}
 	wincompile --Icon=abc.ico -- -A --unstable app.ts
