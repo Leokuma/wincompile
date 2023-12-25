@@ -5,7 +5,7 @@ import cache from './cache.ts';
 import {type Metadata, setMetadata} from './metadata.ts';
 
 if (!Deno.args.length) {
-	const help = `Compile Deno apps for Windows with custom metadata.
+	const help = `Compile Deno apps for Windows with custom icon and metadata.
 
 ${bold('Installation')}
 	deno install -f --allow-env=DENO_DIR,LOCALAPPDATA allow-net=raw.githubusercontent.com/Leokuma/wincompile --allow-read --allow-write --allow-run https://deno.land/x/wincompile@0.2.0/wincompile.ts
